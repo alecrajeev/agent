@@ -2,6 +2,8 @@ module github.com/grafana/agent
 
 go 1.21.0
 
+replace github.com/grafana/river => github.com/alecrajeev/river v1.2.1
+
 require (
 	cloud.google.com/go/pubsub v1.33.0
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.0-beta.1
