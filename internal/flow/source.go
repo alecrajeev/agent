@@ -29,6 +29,7 @@ type Source struct {
 //
 // bb must not be modified after passing to ParseSource.
 func ParseSource(name string, bb []byte) (*Source, error) {
+	fmt.Println("start ParseSource")
 	bb, err := encoder.EnsureUTF8(bb, true)
 	if err != nil {
 		return nil, err
@@ -37,6 +38,7 @@ func ParseSource(name string, bb []byte) (*Source, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("finish ParseSource")
 	source, err := sourceFromBody(node.Body)
 	if err != nil {
 		return nil, err
@@ -54,6 +56,7 @@ func sourceFromBody(body ast.Body) (*Source, error) {
 	//
 	// TODO(rfratto): should this code be brought into a helper somewhere? Maybe
 	// in ast?
+	fmt.Println("Start sourceFromBody")
 	var (
 		components []*ast.BlockStmt
 		configs    []*ast.BlockStmt

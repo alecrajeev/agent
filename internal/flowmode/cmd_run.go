@@ -398,6 +398,8 @@ func loadFlowSource(path string, converterSourceFormat string, converterBypassEr
 		return nil, err
 	}
 
+	fmt.Println("start loadFlowSource")
+
 	if fi.IsDir() {
 		sources := map[string][]byte{}
 		err := filepath.WalkDir(path, func(curPath string, d fs.DirEntry, err error) error {
@@ -439,6 +441,7 @@ func loadFlowSource(path string, converterSourceFormat string, converterBypassEr
 		}
 
 		bb, diags = converter.Convert(bb, converter.Input(converterSourceFormat), ea)
+		fmt.Println("finished convert")
 		hasError := hasErrorLevel(diags, convert_diag.SeverityLevelError)
 		hasCritical := hasErrorLevel(diags, convert_diag.SeverityLevelCritical)
 		if hasCritical || (!converterBypassErrors && hasError) {
