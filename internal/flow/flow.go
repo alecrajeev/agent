@@ -151,6 +151,7 @@ type controllerOptions struct {
 // moduleRegistry. Modules created by the controller will be passed to the
 // given modReg.
 func newController(o controllerOptions) *Flow {
+	fmt.Println("arajeev: new controller")
 	var (
 		log        = o.Logger
 		tracer     = o.Tracer

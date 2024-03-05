@@ -291,6 +291,7 @@ func (fr *flowRun) Run(configPath string) error {
 		},
 	})
 
+	fmt.Println("check flow controller ready")
 	ready = f.Ready
 	reload = func() (*flow.Source, error) {
 		flowSource, err := loadFlowSource(configPath, fr.configFormat, fr.configBypassConversionErrors, fr.configExtraArgs)
@@ -397,8 +398,6 @@ func loadFlowSource(path string, converterSourceFormat string, converterBypassEr
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println("start loadFlowSource")
 
 	if fi.IsDir() {
 		sources := map[string][]byte{}

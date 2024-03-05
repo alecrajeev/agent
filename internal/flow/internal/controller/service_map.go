@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/grafana/agent/internal/service"
 	"golang.org/x/exp/maps"
 )
@@ -10,11 +12,13 @@ type ServiceMap map[string]service.Service
 
 // NewServiceMap creates a ServiceMap from a slice of services.
 func NewServiceMap(services []service.Service) ServiceMap {
+	fmt.Println("new NewServiceMap")
 	m := make(ServiceMap, len(services))
 	for _, svc := range services {
 		name := svc.Definition().Name
 		m[name] = svc
 	}
+	fmt.Println("return NewServiceMap")
 	return m
 }
 

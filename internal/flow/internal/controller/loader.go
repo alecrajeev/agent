@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -67,6 +68,7 @@ type LoaderOptions struct {
 // NewLoader creates a new Loader. Components built by the Loader will be built
 // with co for their options.
 func NewLoader(opts LoaderOptions) *Loader {
+	fmt.Println("arajeev: new NewLoader")
 	var (
 		globals  = opts.ComponentGlobals
 		services = opts.Services
@@ -138,6 +140,7 @@ type ApplyOptions struct {
 // functions to components. A child context will be constructed from the parent
 // to expose values of other components.
 func (l *Loader) Apply(options ApplyOptions) diag.Diagnostics {
+	fmt.Println("arajeev: start Apply")
 	start := time.Now()
 	l.mut.Lock()
 	defer l.mut.Unlock()
@@ -177,8 +180,12 @@ func (l *Loader) Apply(options ApplyOptions) diag.Diagnostics {
 
 	l.cache.ClearModuleExports()
 
+	i := 0
+
 	// Evaluate all the components.
 	_ = dag.WalkTopological(&newGraph, newGraph.Leaves(), func(n dag.Node) error {
+		fmt.Println("arajeev: start WalkTopological " + strconv.Itoa(i))
+		i += 1
 		_, span := tracer.Start(spanCtx, "EvaluateNode", trace.WithSpanKind(trace.SpanKindInternal))
 		span.SetAttributes(attribute.String("node_id", n.NodeID()))
 		defer span.End()
@@ -196,6 +203,8 @@ func (l *Loader) Apply(options ApplyOptions) diag.Diagnostics {
 			componentIDs = append(componentIDs, n.ID())
 
 			if err = l.evaluate(logger, n); err != nil {
+				fmt.Println("arajeev: evalulate returned error")
+				fmt.Println("arajeev: " + n.ComponentName())
 				var evalDiags diag.Diagnostics
 				if errors.As(err, &evalDiags) {
 					diags = append(diags, evalDiags...)
